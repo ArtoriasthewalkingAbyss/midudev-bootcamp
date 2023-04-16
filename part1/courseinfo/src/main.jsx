@@ -1,47 +1,53 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-const Header = ({course}) => <h1>{course}</h1>
+const Header = ({course}) => <h1>{course.name}</h1>
 
-const Content = ({part, exercises}) => {
+const Part = ({part}) => {
+  return (
+      <p>
+        {part.name} {part.exercises}
+      </p>
+  )
+}
+
+const Content = ({part}) => {
 
   return (
     <>
-      <p>
-        {part.part1} {exercises.exercises1}
-      </p>
-
-      <p>
-        {part.part2} {exercises.exercises2}
-      </p>
-
-      <p>
-        {part.part3} {exercises.exercises3}
-      </p>
+    <Part part={part.part1}/>
+    <Part part={part.part2}/>
+    <Part part={part.part3}/>
     </>
   )
 }
 
-const Total = ({exercises}) => <p>Number of exercises {exercises.exercises1 + exercises.exercises2 + exercises.exercises3}</p>
-
+const Total = ({exercises}) => <p>Number of exercises {exercises.part1.exercises + exercises.part2.exercises + exercises.part3.exercises}</p>
+//encontratr una mejor forma de iterar por el objeto
 const App = () => {
-  const course = 'Half Stack application development'
-  const part = {
-    part1: 'Fundamentals of React',
-    part2: 'Using props to pass data',
-    part3: 'State of a component'
-  }
-  const exercises = {
-    exercises1: 10,
-    exercises2: 7,
-    exercises3: 14
+  const course = {
+    name: 'Half Stack application development',
+    part: {
+      part1: {
+        name:'Fundamentals of React',
+        exercises: 10
+      },
+      part2: {
+        name: 'Using props to pass data',
+        exercises: 7
+      }, 
+      part3: {
+        name: 'State of a component',
+        exercises: 14
+      }
+    }
   }
 
   return (
     <div>
       <Header course={course} />
-      <Content part={part} exercises={exercises}  />
-      <Total exercises={exercises}  />
+      <Content part={course.part} />
+      <Total exercises={course.part}  />
     </div>
   )
 }
