@@ -13,42 +13,50 @@ const Part = ({ part }) => {
 const Content = ({ part }) => {
   return (
     <>
-      {Object.values(part).map(value => {
-        return (<Part key={value.name} part={ value }/>)
+      {part.map(value => {
+        return (<Part key={value.id} part={ value }/>)
       })
       }
     </>
   )
 }
 
-const Total = ({ exercises }) => <p>Number of exercises {exercises.part1.exercises + exercises.part2.exercises + exercises.part3.exercises}</p>
-
-const App = () => {
-  const course = {
-    name: 'Half Stack application development',
-    part: {
-      part1: {
-        name: 'Fundamentals of React',
-        exercises: 10
-      },
-      part2: {
-        name: 'Using props to pass data',
-        exercises: 7
-      },
-      part3: {
-        name: 'State of a component',
-        exercises: 14
-      }
-    }
+const Course = ({ course }) => {
+  if (!course) {
+    return <p>No hay cursos</p>
   }
-
   return (
     <main>
       <Header course={course} />
-      <Content part={course.part} />
-      <Total exercises={course.part} />
+      <Content part={course.parts} />
     </main>
   )
+}
+
+const App = () => {
+  const course = {
+    id: 0,
+    name: 'Half Stack application development',
+    parts: [
+      {
+        name: 'Fundamentals of React',
+        exercises: 10,
+        id: 1
+      },
+      {
+        name: 'Using props to pass data',
+        exercises: 7,
+        id: 2
+      },
+      {
+        name: 'State of a component',
+        exercises: 14,
+        id: 3
+      }
+    ]
+  }
+
+  return <Course course={course} />
 }
 
 export default App
