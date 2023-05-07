@@ -1,44 +1,5 @@
 import './App.css'
-
-const Header = ({ course }) => <h1>{course.name}</h1>
-
-const Part = ({ part }) => {
-  return (
-      <p>
-        {part.name} {part.exercises}
-      </p>
-  )
-}
-
-const Content = ({ part }) => {
-  return (
-    <>
-      {part.map(value => (<Part key={value.id} part={ value }/>))}
-    </>
-  )
-}
-
-const TotalExercises = ({ part }) => {
-  const total = part.reduce((acc, item) => {
-    return (acc += item.exercises)
-  }, 0)
-  return (
-    <p><strong>total of {total} exercises</strong></p>
-  )
-}
-
-const Course = ({ course }) => {
-  if (!course) {
-    return <p>No hay cursos</p>
-  }
-  return (
-    <section>
-      <Header course={course} />
-      <Content part={course.parts} />
-      <TotalExercises part={course.parts}/>
-    </section>
-  )
-}
+import { Course } from './components/Course.jsx'
 
 const App = () => {
   const course = [
