@@ -13,11 +13,18 @@ const Part = ({ part }) => {
 const Content = ({ part }) => {
   return (
     <>
-      {part.map(value => {
-        return (<Part key={value.id} part={ value }/>)
-      })
-      }
+      {part.map(value => (<Part key={value.id} part={ value }/>))}
     </>
+  )
+}
+
+const TotalExercises = ({ part }) => {
+  let total = 0
+  part.forEach(element => {
+    total += element.exercises
+  })
+  return (
+    <p><strong>total of {total} exercises</strong></p>
   )
 }
 
@@ -29,6 +36,7 @@ const Course = ({ course }) => {
     <main>
       <Header course={course} />
       <Content part={course.parts} />
+      <TotalExercises part={course.parts}/>
     </main>
   )
 }
