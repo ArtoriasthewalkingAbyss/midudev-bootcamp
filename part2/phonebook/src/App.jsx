@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
+import axios from "axios";
 
 function FilterShown({persons}) {
 	const [filter, setfilter] = useState("");
@@ -57,14 +58,16 @@ function PersonsList({ persons}) {
 }
 
 function App() {
-	const [persons, setPersons] = useState([
-		{id: 1, name: "Arto Hellas", number: 454687461687},
-		{ id: 2, name: "Ada Lovelace", number: 39445323523},
-		{ id: 3, name: "Dan Abramov", number: 1243234345},
-		{ id: 4, name: "Mary Poppendieck", number: 39236423122}
-	]);
+	const [persons, setPersons] = useState([]);
 	const [newName, setNewName] = useState("");
 	const [newNumber, setNewNumber] = useState("");
+
+	useEffect(() => {
+		axios.get("http://localhost:3001/persons").then((response) => {
+			const {data} = response;
+			setPersons(data);
+		});
+	}, []);
 
 	const handleChange = (event) => {
 		console.log(event);
@@ -85,9 +88,9 @@ function App() {
 		}
 
 		const personToAddToState = {
-			id: persons.length + 1,
 			name: newName,
 			number: newNumber,
+			id: persons.length + 1,
 		};
 
 		setPersons(persons.concat(personToAddToState));
