@@ -6,15 +6,15 @@ function Pais({paises}) {
 
   return (
     <>
-      <h2>{paises[0].name.common}</h2> 
-      <p>capital {paises[0].capital}</p> 
-      <p>poblacion {paises[0].population}</p>
+      <h2>{paises.name.common}</h2> 
+      <p>capital {paises.capital}</p> 
+      <p>poblacion {paises.population}</p>
       <h3>Lenguas</h3>
-      { Object.entries(paises[0].languages).map(function ([clave, valor]) {
+      { Object.entries(paises.languages).map(function ([clave, valor]) {
             return  <li key={clave}>{valor}</li>
         })
       }
-      <img src={paises[0].flags.png} alt={paises[0].flags.alt} />
+      <img src={paises.flags.png} alt={paises.flags.alt} />
     </>
   )
 }
@@ -33,13 +33,18 @@ function App() {
     fetch("https://restcountries.com/v3.1/all").then((response) => response.json()).then((json) => {setCount(json) })
 
   }, [])
-  
+
+  const searchCLick = (pais) => {
+		const eleccion = pais.toLowerCase();
+		setfilter(eleccion);
+	};
+
   count.map((value) => {
     if (value.name.common.toLowerCase().includes(filter)) {
       paises.push(value);
     }
   })
-
+  
   if (count.length === 0) {
     return <div className="chaotic-orbit"></div>
   }
@@ -53,11 +58,16 @@ function App() {
           : paises.length > 1 
             ? count.map((value) => {
               if (value.name.common.toLowerCase().includes(filter)) {
-                return <h3 key={value.name.common}>{value.name.common}</h3>;
+                return (
+                  <>
+                    <h3 key={value.name.common}>{value.name.common}</h3>
+                    <button key={value.translations.kor.common} onClick={() => searchCLick(value.name.common)}> show</button>
+                  </>
+                );
               }
             })
             : paises.length === 1
-              ? <Pais paises={paises}/>
+              ? <Pais paises={paises[0]}/>
               : <p>Ningún país encontrado</p>
         }  
       </section>
