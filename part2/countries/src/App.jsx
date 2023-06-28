@@ -3,6 +3,11 @@ import { useEffect, useState } from 'react'
 import './App.css'
 
 function Pais({paises}) {
+  const [capital, setCapital] = useState([])
+
+  useEffect(() => {
+    fetch(`http://api.weatherstack.com/current?access_key=${import.meta.env.VITE_API_KEY}&query=${paises.capital}`).then((response) => response.json()).then((json) => {setCapital(json) })
+  }, [paises])
 
   return (
     <>
@@ -15,6 +20,10 @@ function Pais({paises}) {
         })
       }
       <img src={paises.flags.png} alt={paises.flags.alt} />
+      <h3>Weather in {paises.capital}</h3>
+      <h5>temperature: {capital.current.temperature} Celcius</h5>
+      <img src={capital.current.weather_icons[0]} alt={capital.current.weather_icons[0]} />
+      <h5>wind: {capital.current.wind_speed} mph direcction {capital.current.wind_dir}</h5>
     </>
   )
 }
