@@ -1,0 +1,19 @@
+import axios from "axios";
+
+const getAllContacts = () => {
+	return axios.get("http://localhost:3001/persons")
+		.then((response) => {
+			const {data} = response;
+			return data;
+		});
+};
+
+const createContacts = ({name, number}) => {
+	return axios.post("http://localhost:3001/persons", {name, number})
+		.then((response) => {
+			const {data} = response;
+			return data;
+		});
+};
+
+export {getAllContacts, createContacts};

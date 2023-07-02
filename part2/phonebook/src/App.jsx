@@ -1,19 +1,18 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import axios from "axios";
 import { FilterShown } from "./components/FilterShown.jsx";
 import { Form } from "./components/Form.jsx";
-import { PersonsList } from "./components/PersonsList.jsx";
+import { ContactsList } from "./components/ContactsList.jsx";
+import { getAllContacts, createContacts } from "./services/contacts/index.js";
 
 function App() {
-	const [persons, setPersons] = useState([]);
+	const [contacts, setContacts] = useState([]);
 	const [newName, setNewName] = useState("");
 	const [newNumber, setNewNumber] = useState("");
 
 	useEffect(() => {
-		axios.get("http://localhost:3001/persons").then((response) => {
-			const {data} = response;
-			setPersons(data);
+		getAllContacts().then((contacts) => {
+			setContacts(contacts);
 		});
 	}, []);
 
@@ -29,20 +28,18 @@ function App() {
 	const handleSubmit = (event) => {
 		event.preventDefault();
 
-		if (persons.some((value) => value.name === newName || value.number === newNumber)) {
+		if (contacts.some((value) => value.name === newName || value.number === newNumber)) {
 			alert(newName + "ya esta agregado a su agenda");
 			return;
 		}
 
-		const personToAddToState = {
+		const contactsToAddToState = {
 			name: newName,
 			number: newNumber,
 		};
 
-		axios.post("http://localhost:3001/persons", personToAddToState).then((response) => {
-			const {data} = response;
-			
-			setPersons((prevPersons) => prevPersons.concat(data));
+		createContacts(contactsToAddToState).then((newContacts) => {
+			setContacts((prevContacts) => prevContacts.concat(newContacts));
 		});
 
 	};
@@ -50,9 +47,9 @@ function App() {
 	return (
 		<main>
 			<h2>Phonebook</h2>
-			<FilterShown persons={persons}/>
+			<FilterShown contacts={contacts}/>
 			<Form handleChange={handleChange} handleSubmit={handleSubmit} />
-			<PersonsList persons={persons}/>
+			<ContactsList contacts={contacts}/>
 		</main>
 	);
 }

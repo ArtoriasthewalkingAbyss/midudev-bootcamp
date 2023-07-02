@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export function FilterShown({persons}) {
+export function FilterShown({contacts}) {
 	const [filter, setfilter] = useState("");
 
 	const searchChange = (event) => {
@@ -15,7 +15,7 @@ export function FilterShown({persons}) {
 				<input id="search-input" type="text" onChange={searchChange} name="search"/>
 			</div>
 
-			{persons.map((value) => {
+			{contacts.map((value) => {
 				if (value.name.toLowerCase().includes(filter)) {		
 					return <h3 key={value.id}>{value.name}, {value.number} </h3>;
 				}

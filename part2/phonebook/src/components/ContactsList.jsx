@@ -1,8 +1,8 @@
-export function PersonsList({ persons}) {
+export function ContactsList({ contacts}) {
 	return (
 		<section>
 			<h2>Numbers</h2>
-			{persons.map((value) => {
+			{contacts.map((value) => {
 				return <h3 key={value.id}>{value.name}, {value.number} </h3>;
 			})}
 		</section>
