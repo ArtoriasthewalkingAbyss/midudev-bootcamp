@@ -1,11 +1,12 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 
 export function FilterShown({contacts}) {
-	const [filter, setfilter] = useState("");
+	const [filter, setFilter] = useState("");
 
 	const searchChange = (event) => {
 		const filtrar = event.target.value.toLowerCase();
-		setfilter(filtrar);
+		setFilter(filtrar);
 	};
 
 	return (

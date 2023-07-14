@@ -3,7 +3,7 @@ import "./App.css";
 import { FilterShown } from "./components/FilterShown.jsx";
 import { Form } from "./components/Form.jsx";
 import { ContactsList } from "./components/ContactsList.jsx";
-import { getAllContacts, createContacts } from "./services/contacts/index.js";
+import { getAllContacts, createContacts, deleteContact } from "./services/contacts/index.js";
 
 function App() {
 	const [contacts, setContacts] = useState([]);
@@ -44,12 +44,21 @@ function App() {
 
 	};
 
+	const removeContact = (id, name) => {
+		if (confirm("Delete " + name )) {
+			return deleteContact(id).then(() => {
+				setContacts(contacts.filter(contact => contact.id !== id));
+			});
+			
+		}
+	};
+	
 	return (
 		<main>
 			<h2>Phonebook</h2>
 			<FilterShown contacts={contacts}/>
 			<Form handleChange={handleChange} handleSubmit={handleSubmit} />
-			<ContactsList contacts={contacts}/>
+			<ContactsList contacts={contacts} removeContact={removeContact}/>
 		</main>
 	);
 }

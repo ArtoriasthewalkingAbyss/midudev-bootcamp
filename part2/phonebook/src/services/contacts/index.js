@@ -16,4 +16,11 @@ const createContacts = ({name, number}) => {
 		});
 };
 
-export {getAllContacts, createContacts};
+function deleteContact(id) {
+	return axios.delete(`http://localhost:3001/persons/${id}`).then((response) => {
+		const {data} = response;
+		return data;
+	});
+}
+
+export {getAllContacts, createContacts, deleteContact};
