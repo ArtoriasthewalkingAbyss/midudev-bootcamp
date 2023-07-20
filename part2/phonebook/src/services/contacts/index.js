@@ -23,4 +23,11 @@ function deleteContact(id) {
 	});
 }
 
-export {getAllContacts, createContacts, deleteContact};
+function updateContact(contact) {
+	return axios.put(`http://localhost:3001/persons/${contact.id}`, contact).then((response) => {
+		const {data} = response;
+		return data;
+	});
+}
+
+export {getAllContacts, createContacts, deleteContact, updateContact};

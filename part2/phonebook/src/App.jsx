@@ -3,7 +3,7 @@ import "./App.css";
 import { FilterShown } from "./components/FilterShown.jsx";
 import { Form } from "./components/Form.jsx";
 import { ContactsList } from "./components/ContactsList.jsx";
-import { getAllContacts, createContacts, deleteContact } from "./services/contacts/index.js";
+import { getAllContacts, createContacts, deleteContact, updateContact } from "./services/contacts/index.js";
 
 function App() {
 	const [contacts, setContacts] = useState([]);
@@ -28,17 +28,28 @@ function App() {
 	const handleSubmit = (event) => {
 		event.preventDefault();
 
-		if (contacts.some((value) => value.name === newName || value.number === newNumber)) {
+		if (contacts.some((value) => value.name === newName && value.number === newNumber)) {
 			alert(newName + "ya esta agregado a su agenda");
 			return;
+		} else if (contacts.some((value) => value.name === newName && value.number !== newNumber)) {
+			if (confirm(newName + " esta en su agenda, ¿quiere remplazar el viejo numero por el nuevo?")) {
+				let contact = contacts.find(c => c.name === newName);
+				let contactNewNumber = {...contact, number: newNumber};
+				return updateContact(contactNewNumber).then(response => {
+					setContacts((prevContacts) => prevContacts.map(cont => cont.name !== newName ? cont : response));
+				});
+				
+			} else {
+				return;
+			}
 		}
 
-		const contactsToAddToState = {
+		const contactToAddToState = {
 			name: newName,
 			number: newNumber,
 		};
 
-		createContacts(contactsToAddToState).then((newContacts) => {
+		createContacts(contactToAddToState).then((newContacts) => {
 			setContacts((prevContacts) => prevContacts.concat(newContacts));
 		});
 
@@ -52,7 +63,7 @@ function App() {
 			
 		}
 	};
-	
+
 	return (
 		<main>
 			<h2>Phonebook</h2>
