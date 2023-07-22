@@ -7,6 +7,8 @@ function Notification ({ notification }) {
 		classStyle = "delete";
 	} else if (notification.includes("Update")) {
 		classStyle = "update";
+	} else if (notification.includes("Error")) {
+		classStyle = "update";
 	}
     
 	return (
