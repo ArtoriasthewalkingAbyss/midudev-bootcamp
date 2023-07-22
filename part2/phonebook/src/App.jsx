@@ -16,6 +16,8 @@ function App() {
 	useEffect(() => {
 		getAllContacts().then((contacts) => {
 			setContacts(contacts);
+		}).catch((error) => {
+			setNotification("Error al obtener los contactos" + error);
 		});
 	}, []);
 
@@ -49,6 +51,8 @@ function App() {
 					setNotification("Update " + response.name);
 					
 					setContacts((prevContacts) => prevContacts.map(cont => cont.name !== newName ? cont : response));
+				}) .catch((error) => {
+					setNotification(`Error al actualizar a ${contactNewNumber.name} tipo de error: ` + error);
 				});
 				
 			} else {
@@ -65,6 +69,8 @@ function App() {
 			setNotification("Added " + newContacts.name);
 
 			setContacts((prevContacts) => prevContacts.concat(newContacts));
+		}).catch((error) => {
+			setNotification(`Error al crear a el contacto ${contactToAddToState.name} tipo de error: ` + error);
 		});
 
 	};
@@ -75,6 +81,8 @@ function App() {
 				setNotification("Delete " + name);
 
 				setContacts(contacts.filter(contact => contact.id !== id));
+			}).catch((error) => {
+				setNotification(`Error al eliminar a ${name} tipo de error: ` + error);
 			});
 			
 		}
