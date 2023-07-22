@@ -16,7 +16,7 @@ export function FilterShown({contacts}) {
 			</div>
 
 			{contacts.map((value) => {
-				if (value.name.toLowerCase().includes(filter)) {		
+				if (value.name.toLowerCase().includes(filter) && filter !== "") {		
 					return <h3 key={value.id}>{value.name}, {value.number} </h3>;
 				}
 			})}
