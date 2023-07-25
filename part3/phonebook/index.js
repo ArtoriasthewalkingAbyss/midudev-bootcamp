@@ -29,7 +29,14 @@ app.get("/api/persons", (request, response) => {
     response.json(persons)
 })
 
+app.get("/info", (request, response) => {
+  const cabtidadContactos = persons.length;
+  
+  response.send(`<p>La agenda tiene información de ${cabtidadContactos} personas</p> <p>${Date()}</p>`)
+})
+
+
 const PORT = 3001
 app.listen(PORT, () => {
-    console.log("el sever esta en el puerto", PORT)
+    console.log("el sever esta en el puerto ", PORT)
 })
