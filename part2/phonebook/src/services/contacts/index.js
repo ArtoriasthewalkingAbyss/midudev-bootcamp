@@ -1,7 +1,8 @@
 import axios from "axios";
+const baseUrl = "http://localhost:3001/api/persons";
 
 const getAllContacts = () => {
-	return axios.get("http://localhost:3001/persons")
+	return axios.get(baseUrl)
 		.then((response) => {
 			const {data} = response;
 			return data;
@@ -9,7 +10,7 @@ const getAllContacts = () => {
 };
 
 const createContacts = ({name, number}) => {
-	return axios.post("http://localhost:3001/persons", {name, number})
+	return axios.post(baseUrl, {name, number})
 		.then((response) => {
 			const {data} = response;
 			return data;
@@ -17,14 +18,14 @@ const createContacts = ({name, number}) => {
 };
 
 function deleteContact(id) {
-	return axios.delete(`http://localhost:3001/persons/${id}`).then((response) => {
+	return axios.delete(`${baseUrl}/${id}`).then((response) => {
 		const {data} = response;
 		return data;
 	});
 }
 
 function updateContact(contact) {
-	return axios.put(`http://localhost:3001/persons/${contact.id}`, contact).then((response) => {
+	return axios.put(`${baseUrl}/${contact.id}`, contact).then((response) => {
 		const {data} = response;
 		return data;
 	});
