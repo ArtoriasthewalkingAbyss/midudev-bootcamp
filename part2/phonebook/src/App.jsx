@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "./App.css";
+import "./style/App.css";
 import "./style/Notification.css";
 import { getAllContacts, createContacts, deleteContact, updateContact } from "./services/contacts/index.js";
 import { FilterShown } from "./components/FilterShown.jsx";
