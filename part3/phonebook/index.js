@@ -87,22 +87,16 @@ app.post("/api/persons", (request, response) => {
   } else if (!person.number) {
     return response.status(400).json({ error: "la propiedad number esta vacia" })
 
-  } else if (persons.some(value => value.name === person.name)) {
-    return response.status(400).json({ error: "el name debe ser único" })
-  }
-  
-  const ids = persons.map(person => person.id)
-  const maxId = Math.max(...ids)
-
-  const newPerson = {
-    id: maxId +1,
+  };
+  const newContact = new Contact({
     name: person.name,
     number: person.number
-  }
+  })
+  
+  newContact.save().then(result => {
+    response.status(201).json(result);
+  })
 
-  persons = persons.concat(newPerson)
-
-  response.status(201).json(newPerson)
 })
 
 const PORT = process.env.PORT
