@@ -1,7 +1,11 @@
+require('dotenv').config()
+require("./mongo");
+
 const express = require("express");
 const morgan = require('morgan')
 const cors = require('cors')
 const app = express();
+const Contact = require("./models/Contact");
 
 app.use(cors())
 app.use(express.json())
@@ -45,13 +49,15 @@ let persons = [
 ]
 
 app.get("/api/persons", (request, response) => {
-    response.json(persons)
+  Contact.find({}).then(result => {
+    response.json(result);
+  })
 })
 
 app.get("/info", (request, response) => {
-  const cabtidadContactos = persons.length;
+  const cantidadContactos = persons.length;
   
-  response.send(`<p>La agenda tiene información de ${cabtidadContactos} personas</p> <p>${Date()}</p>`)
+  response.send(`<p>La agenda tiene información de ${cantidadContactos} personas</p> <p>${Date()}</p>`)
 })
 
 app.get("/api/persons/:id", (request, response) => {
@@ -99,7 +105,7 @@ app.post("/api/persons", (request, response) => {
   response.status(201).json(newPerson)
 })
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT
 app.listen(PORT, () => {
     console.log("el sever esta en el puerto ", PORT)
 })
