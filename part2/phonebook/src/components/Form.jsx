@@ -9,7 +9,7 @@ export function Form({ handleChange, handleSubmit }) {
 				</div>
 				<div>
 					<label htmlFor="number-input">Number: </label>
-					<input id="number-input" type="number" onChange={handleChange} name="number"/>
+					<input id="number-input" type="text" onChange={handleChange} name="number"/>
 				</div>
 				<div>
 					<button type="submit">add</button>
