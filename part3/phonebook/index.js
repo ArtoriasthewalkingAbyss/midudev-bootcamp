@@ -59,15 +59,15 @@ app.get("/api/persons", (request, response, next) => {
 app.get("/info", (request, response) => {
   const cantidadContactos = persons.length;
   
-  response.send(`<p>La agenda tiene información de ${cantidadContactos} personas</p> <p>${Date()}</p>`)
+  response.send(`<p>La agenda tiene información de ${cantidadContactos} contactos</p> <p>${Date()}</p>`)
 })
 
 app.get("/api/persons/:id", (request, response) => {
   const id = Number(request.params.id)
-  const person = persons.find(person => person.id === id)
+  const contact = persons.find(contact => contact.id === id)
 
-  if (person) {
-    response.json(person)
+  if (contact) {
+    response.json(contact)
   } else {
     response.status(404).end()
   }
@@ -82,24 +82,39 @@ app.delete("/api/persons/:id", (request, response, next) => {
 })
 
 app.post("/api/persons", (request, response, next) => {
-  const person = request.body
+  const contact = request.body
 
-  if (!person.name) {
+  if (!contact.name) {
     return response.status(400).json({ error: "la propiedad name esta vacia" })
 
-  } else if (!person.number) {
+  } else if (!contact.number) {
     return response.status(400).json({ error: "la propiedad number esta vacia" })
 
   };
   const newContact = new Contact({
-    name: person.name,
-    number: person.number
+    name: contact.name,
+    number: contact.number
   })
   
   newContact.save().then(result => {
     response.status(201).json(result);
   }).catch(err => next(err))
 
+})
+
+app.put("/api/persons/:id", (request, response, next) => {
+  const {id} = request.params;
+  const contact = request.body
+
+  const newContactInfo = {
+    name: contact.name,
+    number: contact.number
+  }
+
+  Contact.findByIdAndUpdate(id, newContactInfo, {new: true})
+    .then(result => {
+      response.status(202).json(result);
+    }).catch(err => next(err))
 })
 
 app.use((error, request, response, next) => {
