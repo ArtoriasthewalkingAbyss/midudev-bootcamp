@@ -70,7 +70,7 @@ function App() {
 
 			setContacts((prevContacts) => prevContacts.concat(newContacts));
 		}).catch((error) => {
-			setNotification(`Error al crear a el contacto ${contactToAddToState.name} tipo de error: ` + error);
+			setNotification(`Error al crear a el contacto ${contactToAddToState.name} tipo de error: ` + error.response.data.error);
 		});
 
 	};

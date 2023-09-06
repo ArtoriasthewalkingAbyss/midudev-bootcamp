@@ -25,29 +25,6 @@ app.use(morgan((tokens, req, res) =>
   ].join(" ")
 ))
 
-let persons = [
-    { 
-      "id": 1,
-      "name": "Arto Hellas", 
-      "number": "040-123456"
-    },
-    { 
-      "id": 2,
-      "name": "Ada Lovelace", 
-      "number": "39-44-5323523"
-    },
-    { 
-      "id": 3,
-      "name": "Dan Abramov", 
-      "number": "12-43-234345"
-    },
-    { 
-      "id": 4,
-      "name": "Mary Poppendieck", 
-      "number": "39-23-6423122"
-    }
-]
-
 app.get("/api/persons", (request, response, next) => {
   Contact.find({}).then(result => {
     response.json(result);
@@ -57,20 +34,26 @@ app.get("/api/persons", (request, response, next) => {
 })
 
 app.get("/info", (request, response) => {
-  const cantidadContactos = persons.length;
+  Contact.find({}).then(result => {
+    const cantidadContactos = result.length;
+    
+    response.send(`<p>La agenda tiene información de ${cantidadContactos} contactos</p> <p>${Date()}</p>`)
+  })
   
-  response.send(`<p>La agenda tiene información de ${cantidadContactos} contactos</p> <p>${Date()}</p>`)
 })
 
-app.get("/api/persons/:id", (request, response) => {
-  const id = Number(request.params.id)
-  const contact = persons.find(contact => contact.id === id)
+app.get("/api/persons/:id", (request, response, next) => {
+  const { id } = request.params;
 
-  if (contact) {
-    response.json(contact)
-  } else {
-    response.status(404).end()
-  }
+  Contact.findById(id).then(result => {
+    console.log(result)
+    if (result) {
+      response.json(result)
+    } else {
+      response.status(404).end()
+    }
+  }).catch(err => next(err))
+  
 })
 
 app.delete("/api/persons/:id", (request, response, next) => {
@@ -111,7 +94,7 @@ app.put("/api/persons/:id", (request, response, next) => {
     number: contact.number
   }
 
-  Contact.findByIdAndUpdate(id, newContactInfo, {new: true})
+  Contact.findByIdAndUpdate(id, newContactInfo, {new: true, runValidators: true})
     .then(result => {
       response.status(202).json(result);
     }).catch(err => next(err))
@@ -122,6 +105,8 @@ app.use((error, request, response, next) => {
   console.log(error.name);
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id' })
+  } else if (error.name === 'ValidationError') {
+    return response.status(400).json({ error: error.message })
   } else {
     response.status(500).end();
   }
