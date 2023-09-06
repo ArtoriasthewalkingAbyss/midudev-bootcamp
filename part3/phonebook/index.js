@@ -94,7 +94,7 @@ app.put("/api/persons/:id", (request, response, next) => {
     number: contact.number
   }
 
-  Contact.findByIdAndUpdate(id, newContactInfo, {new: true})
+  Contact.findByIdAndUpdate(id, newContactInfo, {new: true, runValidators: true})
     .then(result => {
       response.status(202).json(result);
     }).catch(err => next(err))
@@ -105,6 +105,8 @@ app.use((error, request, response, next) => {
   console.log(error.name);
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id' })
+  } else if (error.name === 'ValidationError') {
+    return response.status(400).json({ error: error.message })
   } else {
     response.status(500).end();
   }
