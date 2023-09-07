@@ -6,7 +6,17 @@ const contactSchema = new Schema({
       minLength: 3,
       required: true
     },
-    number: String,
+    number: {
+      type: String,
+      minLength: 8,
+      validate: {
+        validator: function(v) {
+          return /\d{2}-\d{6}/.test(v);
+        },
+        message: props => `${props.value} no es un numero valido detener este tipo de formato 00-000000`
+      },
+      required: true
+    }
   })
   
   contactSchema.set('toJSON', {
